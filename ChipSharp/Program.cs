@@ -14,7 +14,7 @@ namespace ChipSharp
                 int frame = 0;
 
                 var chip = new Chip();
-                chip.initialize("TETRIS");
+                chip.initialize("INVADERS");
 
                 gameWindow.Load += (sender, e) =>
                 {
@@ -26,9 +26,9 @@ namespace ChipSharp
                     GL.Viewport(0, 0, 640, 320);
                 };
 
-                gameWindow.KeyPress += (sender, e) =>
+                gameWindow.KeyDown += (sender, e) =>
                 {
-                    var pressedKey = e.KeyChar.ToString();
+                    var pressedKey = e.Key.ToString();
 
                     switch (pressedKey)
                     {
@@ -113,11 +113,82 @@ namespace ChipSharp
                     chip.isInputExecuted = true;
                 };
 
+                gameWindow.KeyUp += (sender, e) =>
+                {
+                    var pressedKey = e.Key.ToString();
+
+                    switch (pressedKey)
+                    {
+                        case "1":
+                            chip.key[0x1] = 0;
+                            break;          
+                        case "2":          
+                            chip.key[0x2] = 0;
+                            break;          
+                        case "3":          
+                            chip.key[0x3] = 0;
+                            break;          
+                        case "4":           
+                            chip.key[0xC] = 0;
+                            break;          
+                        case "q":          
+                        case "Q":           
+                            chip.key[0x4] = 0;
+                            break;          
+                        case "w":          
+                        case "W":           
+                            chip.key[0x5] = 0;
+                            break;          
+                        case "e":           
+                        case "E":           
+                            chip.key[0x6] = 0;
+                            break;
+                        case "r":           
+                        case "R":           
+                            chip.key[0xD] = 0;
+                            break;          
+                        case "a":           
+                        case "A":           
+                            chip.key[0x7] = 0;
+                            break;          
+                        case "s":           
+                        case "S":           
+                            chip.key[0x8] = 0;
+                            break;          
+                        case "d":           
+                        case "D":           
+                            chip.key[0x9] = 0;
+                            break;          
+                        case "f":           
+                        case "F":           
+                            chip.key[0xE] = 0;
+                            break;          
+                        case "z":           
+                        case "Z":           
+                            chip.key[0xA] = 0;
+                            break;          
+                        case "x":           
+                        case "X":           
+                            chip.key[0x0] = 0;
+                            break;          
+                        case "c":           
+                        case "C":           
+                            chip.key[0xB] = 0;
+                            break;          
+                        case "v":           
+                        case "V":           
+                            chip.key[0xF] = 0;
+                            break;
+                    }
+
+                    chip.isInputExecuted = true;
+                };
+
                 gameWindow.RenderFrame += (sender, e) =>
                 {
                     gameWindow.Title = (frame % 60).ToString();
                     frame++;
-
+                    
                     chip.tick();
 
                     GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -133,10 +204,10 @@ namespace ChipSharp
                             if (chip.gfx[i, j])
                             {
                                 GL.Begin(PrimitiveType.Quads);
-                                GL.Vertex2(i * 4, j * 4);
-                                GL.Vertex2(i * 4, j * 4 + 4);
-                                GL.Vertex2((i + 1) * 4, j * 4 + 4);
-                                GL.Vertex2((i + 1) * 4, j * 4);
+                                GL.Vertex2(i * 10, j * 10);
+                                GL.Vertex2(i * 10, j * 10 + 10);
+                                GL.Vertex2((i + 1) * 10, j * 10 + 10);
+                                GL.Vertex2((i + 1) * 10, j * 10);
                                 GL.End();
                             }
                         }
@@ -145,7 +216,7 @@ namespace ChipSharp
                     gameWindow.SwapBuffers();
                 };
 
-                gameWindow.Run(60.0);
+                gameWindow.Run(120.0);
             }
         }
     }
